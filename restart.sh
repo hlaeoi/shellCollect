@@ -5,6 +5,7 @@ arg_stop="0"
 arg_restart="0"
 arg_start="0"
 debug_default_port="8889";
+
 parse_arguments() {
 	local helperKey="";
 	local helperValue="";
@@ -18,7 +19,7 @@ parse_arguments() {
 		fi
 		if [[ !($arg =~ "--") ]]
 		then
-			JARNAMELIST=$arg;
+			JARNAMELIST=$JARNAMELIST" "$arg;
 			continue;
 		fi
 		current=$arg;
@@ -35,12 +36,10 @@ parse_arguments() {
 		shift
 	done
 }
-if [ $# -lt 1 ]
+parse_arguments ${@};
+if [ ! -n "$JARNAMELIST" ]
 then
         JARNAMELIST=`ls *.jar`
-else
-	#echo ${@};
-        parse_arguments ${@};
 fi
 #echo $JARNAMELIST
 #echo $arg_debug
